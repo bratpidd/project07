@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,11 +13,9 @@ class PostController extends AbstractController
     */
 
 
-    public function create(): void
+    public function create(Request $request): Response
     {
-        //dd($_SERVER);
-        dd($_REQUEST);
-        //dd($_POST);
-        //dd($GLOBALS['_REQUEST']);
+        dump($request->request->all());
+        dd($request->query->all());
     }
 }
