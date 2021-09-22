@@ -1,0 +1,35 @@
+version: "3.7"
+networks:
+  app-tier:
+    driver: bridge
+services:
+  postgres:
+    image: postgres:13.3
+    restart: always
+    environment:
+      POSTGRES_DB: "testdb"
+      POSTGRES_USER: "postgresUser"
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - "5432:5432"
+  phpfpm:
+    image: bitnami/php-fpm:7.3
+    networks:
+      - app-tier
+    volumes:
+      - /var/www/project07:/app
+      - /var/www/project07/20-xdebug.ini:/etc/php/7.3/cli/conf.d/99-xdebug.ini
+      - /var/www/project07/php.ini:/opt/bitnami/php/lib/php.ini
+    build:
+      context: .
+      dockerfile: Dockerfile
+  nginx:
+    image: bitnami/nginx:latest
+    depends_on:
+      - phpfpm
+    networks:
+      - app-tier
+    ports:
+      - "80:80"
+    volumes:
+      - /var/www/project07/nginx_config_project07.conf:/opt/bitnami/nginx/conf/server_blocks/yourapp.conf

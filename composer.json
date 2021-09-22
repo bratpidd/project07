@@ -7,8 +7,11 @@
         "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-xdebug": "*",
         "composer/package-versions-deprecated": "1.11.99.4",
         "doctrine/annotations": "^1.0",
+        "doctrine/doctrine-bundle": "^2.4",
+        "doctrine/doctrine-migrations-bundle": "^3.1",
         "doctrine/orm": "^2.9",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^6.2",
@@ -40,8 +43,7 @@
         "symfony/web-link": "5.3.*",
         "symfony/yaml": "5.3.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-      "ext-xdebug": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "symfony/browser-kit": "5.3.*",
