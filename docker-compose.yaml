@@ -15,16 +15,20 @@ services:
     networks:
       - app-tier
   phpfpm:
+    tty: true
+    stdin_open: true
     image: bitnami/php-fpm:7.3
     networks:
       - app-tier
     volumes:
-      - /var/www/project07:/app
-      - /var/www/project07/20-xdebug.ini:/etc/php/7.3/cli/conf.d/99-xdebug.ini
-      - /var/www/project07/php.ini:/opt/bitnami/php/lib/php.ini
+      - ./:/app
+      - ./php.ini:/opt/bitnami/php/lib/php.ini
+    environment:
+      PHP_IDE_CONFIG: "serverName=dockerServer"
     build:
       context: .
       dockerfile: Dockerfile
+    # command: "composer install"
   nginx:
     image: bitnami/nginx:latest
     depends_on:
@@ -34,4 +38,4 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /var/www/project07/nginx_config_project07.conf:/opt/bitnami/nginx/conf/server_blocks/yourapp.conf
+      - ./nginx_config_project07.conf:/opt/bitnami/nginx/conf/server_blocks/yourapp.conf

@@ -27,8 +27,8 @@ class PostController extends AbstractController
 	{
         $testDbValue = $this->getTimePostgres();
         dump($testDbValue[0]);
-        // phpinfo();
-        //xdebug_info();
+         phpinfo();
+        // xdebug_info();
 		return $postService->addPost("(COCATb)");
 	}
 
