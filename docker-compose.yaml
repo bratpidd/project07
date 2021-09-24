@@ -21,12 +21,14 @@ services:
     networks:
       - app-tier
     volumes:
-      - ./:/app
+      - ./src:/app/src
+      - ./migrations:/app/migrations
+      - ./templates:/app/templates
     environment:
       PHP_IDE_CONFIG: "serverName=test07_server"
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/php-fpm/Dockerfile
   nginx:
     image: bitnami/nginx:latest
     depends_on:
@@ -36,4 +38,5 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx_config_project07.conf:/opt/bitnami/nginx/conf/server_blocks/yourapp.conf
+      - ./docker/nginx/nginx_config_project07.conf:/opt/bitnami/nginx/conf/server_blocks/yourapp.conf
+      - ./static:/app/static
