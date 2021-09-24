@@ -3,4 +3,10 @@ RUN apt-get update
 RUN apt-get -y install php7.3-xdebug
 RUN apt-get -y install php-pgsql
 COPY ./composer.* ./
-RUN composer install --no-dev --no-interaction -o --ignore-platform-reqs --no-scripts
+
+COPY ./bin ./bin
+COPY ./.env ./.env
+COPY . .
+
+COPY ./php.ini /opt/bitnami/php/lib/php.ini
+RUN composer install --no-interaction -o

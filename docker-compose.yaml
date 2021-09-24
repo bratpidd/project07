@@ -22,13 +22,11 @@ services:
       - app-tier
     volumes:
       - ./:/app
-      - ./php.ini:/opt/bitnami/php/lib/php.ini
     environment:
-      PHP_IDE_CONFIG: "serverName=dockerServer"
+      PHP_IDE_CONFIG: "serverName=test07_server"
     build:
       context: .
       dockerfile: Dockerfile
-    # command: "composer install"
   nginx:
     image: bitnami/nginx:latest
     depends_on:
