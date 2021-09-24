@@ -24,6 +24,7 @@ services:
       - ./src:/app/src
       - ./migrations:/app/migrations
       - ./templates:/app/templates
+      - ./config:/app/config
     environment:
       PHP_IDE_CONFIG: "serverName=test07_server"
     build:

@@ -25,7 +25,10 @@ services:
     # please note that last definitions always *replace* previous ones
 
     # App\Util\PostServiceInterface = service ID
-    # App\Service\FakePostService = alias
-    App\Util\PostServiceInterface: '@App\Service\FakePostService'
+    # App\Service\PostServiceMock = alias
 
-    App\Util\PostServiceInterface $truePostService: '@App\Service\PostService'
+    App\Services\PostServiceInterface:
+        "@=service('service_container').get('kernel.environment') == 'test' ? '@App\\Services\\PostServiceMock' : '@App\\Services\\PostService'"
+
+    #App\Services\PostServiceInterface: '@App\Services\PostServiceMock'
+    #App\Services\PostServiceInterface $truePostService: '@App\Services\PostService'

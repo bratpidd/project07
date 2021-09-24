@@ -1,7 +1,5 @@
 <?php
-namespace App\Service;
-
-use App\Util\PostServiceInterface;
+namespace App\Services;
 
 class PostService implements PostServiceInterface {
 

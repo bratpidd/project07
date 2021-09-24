@@ -1,9 +1,7 @@
 <?php
-namespace App\Service;
+namespace App\Services;
 
-use App\Util\PostServiceInterface;
-
-class FakePostService implements PostServiceInterface {
+class PostServiceMock implements PostServiceInterface {
 
     public function addPost(string $message) {
         dd("Zdrastite, eto poddelnyj servis! " . $message);
