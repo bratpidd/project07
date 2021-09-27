@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: "testdb"
+      POSTGRES_USER: "postgresUser"
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - "5432:5432"
+  nginx:
+    ports:
+      - "80:80"

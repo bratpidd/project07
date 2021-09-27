@@ -14,8 +14,8 @@ class PostController extends AbstractController
 	 */
 
 	public function create(Request $request, PostServiceInterface $truePostService): Response {
-        $testValue = "abcd";
-		return $truePostService->addPost($request->request->get('message') ?? "izvenite vi zabili message");
+        $testValue = $this->getParameter('env_value');
+		return $truePostService->addPost($testValue . ($request->request->get('message') ?? " No message was provided"));
 	}
 
 
@@ -27,9 +27,9 @@ class PostController extends AbstractController
 	{
         $testDbValue = $this->getTimePostgres();
         dump($testDbValue[0]);
-         phpinfo();
+        // phpinfo();
         // xdebug_info();
-		return $postService->addPost("(COCATb)");
+		return $postService->addPost("(msg)");
 	}
 
     public function getTimePostgres()

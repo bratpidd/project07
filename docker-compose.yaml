@@ -6,25 +6,20 @@ services:
   postgres:
     image: postgres:13.3
     restart: always
-    environment:
-      POSTGRES_DB: "testdb"
-      POSTGRES_USER: "postgresUser"
-      POSTGRES_PASSWORD: "123"
-    ports:
-      - "5432:5432"
     networks:
       - app-tier
   phpfpm:
     tty: true
     stdin_open: true
-    image: bitnami/php-fpm:7.3
+    # image: bitnami/php-fpm:7.3
     networks:
       - app-tier
     volumes:
-      - ./src:/app/src
-      - ./migrations:/app/migrations
-      - ./templates:/app/templates
-      - ./config:/app/config
+      #- ./src:/app/src
+      #- ./migrations:/app/migrations
+      #- ./templates:/app/templates
+      #- ./config:/app/config
+      - ./:/app
     environment:
       PHP_IDE_CONFIG: "serverName=test07_server"
     build:
@@ -36,8 +31,6 @@ services:
       - phpfpm
     networks:
       - app-tier
-    ports:
-      - "80:80"
     volumes:
-      - ./docker/nginx/nginx_config_project07.conf:/opt/bitnami/nginx/conf/server_blocks/yourapp.conf
+      - ./docker/nginx/nginx_config_project07.conf:/opt/bitnami/nginx/conf/server_blocks/project07.conf
       - ./static:/app/static
