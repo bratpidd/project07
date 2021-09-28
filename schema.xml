@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" namespace="App\PropelModels" package="PropelModels" defaultPhpNamingMethod="underscore">
+
+  <table name="post" idMethod="native" phpName="Post">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="message" phpName="Message" type="VARCHAR" size="1024" required="true"/>
+  </table>
+
+  <table name="tag" idMethod="native" phpName="Tag">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="title" phpName="Title" type="VARCHAR" size="128" required="true"/>
+    <unique name="uq_tag_title">
+      <unique-column name="title" />
+    </unique>
+  </table>
+
+  <table name="post_tag" isCrossRef="true">
+    <column name="post_id" type="INTEGER" primaryKey="true"/>
+    <column name="tag_id" type="INTEGER" primaryKey="true"/>
+    <foreign-key foreignTable="post">
+      <reference local="post_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="tag">
+      <reference local="tag_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="comment" idMethod="native" phpName="Comment">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="text" phpName="Text" type="VARCHAR" size="512" required="true"/>
+    <column name="post_id" phpName="PostId" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="post" name="comment_fk_post">
+      <reference local="post_id" foreign="id"/>
+    </foreign-key>
+  </table>
+
+</database>

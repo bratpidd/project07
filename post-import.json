@@ -1,0 +1,10 @@
+[
+  {
+    "message": "jsonMessage",
+    "tags": ["jsonTag01", "jsonTag02", "jsonTag03"]
+  },
+  {
+    "message": "jsonMessage02",
+    "tags": ["jsonTag02", "jsonTag03", "jsonTag04"]
+  }
+]

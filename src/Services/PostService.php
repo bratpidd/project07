@@ -2,12 +2,27 @@
 namespace App\Services;
 
 
-use Propel\Runtime\Exception\PropelException;
+use App\PropelModels\Post;
+use App\PropelModels\Tag;
+use App\PropelModels\TagQuery;
 
 class PostService implements PostServiceInterface {
 
-    public function addPost(string $message) {
-        dd("Regular service was called! , " . $message);
+    public function createPost(string $message, array $tags) {
+        $post = new Post();
+        $post->setMessage($message);
+
+        foreach ($tags as $tagName) {
+            $tag = TagQuery::create()
+                ->filterByTitle($tagName)
+                ->findOneOrCreate();
+
+            $post->addTag($tag);
+        }
+
+        $post->save();
+
+        // dd("Regular service was called! , " . $message);
     }
 
 }

@@ -1,0 +1,14 @@
+propel:
+    paths:
+        phpDir: src/
+    database:
+        connections:
+            default:
+                adapter: pgsql
+                dsn: pgsql:host=postgres;port=5432;dbname=testdb
+                user: postgresUser
+                password: 123
+                settings:
+                    charset: utf8
+    generator:
+        namespaceAutoPackage: false

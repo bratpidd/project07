@@ -2,5 +2,5 @@
 namespace App\Services;
 
 interface PostServiceInterface {
-    public function addPost(string $message);
+    public function createPost(string $message, array $tags);
 }
