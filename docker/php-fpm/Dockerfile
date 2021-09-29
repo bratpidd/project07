@@ -9,7 +9,7 @@ COPY ./.env ./.env
 COPY ./src ./src
 COPY ./config ./config
 COPY ./public ./public
-# COPY ./generated-classes ./generated-classes
+COPY ./generated-conf ./generated-conf
 # COPY ./migrations ./migrations
 # COPY ./templates ./templates
 # COPY ./static ./static

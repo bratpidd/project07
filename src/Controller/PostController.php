@@ -1,11 +1,16 @@
 <?php
 namespace App\Controller;
 
+use App\Blog\BlogPost;
 use App\Services\PostServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PostController extends AbstractController
 {
@@ -15,7 +20,8 @@ class PostController extends AbstractController
 
 	public function create(Request $request, PostServiceInterface $truePostService): Response {
         $testValue = $this->getParameter('env_value');
-		return $truePostService->addPost($testValue . ($request->request->get('message') ?? " No message was provided"));
+        dd(123);
+		//return $truePostService->addPost($testValue . ($request->request->get('message') ?? " No message was provided"));
 	}
 
 
@@ -29,8 +35,35 @@ class PostController extends AbstractController
         dump($testDbValue[0]);
         // phpinfo();
         // xdebug_info();
-		return $postService->addPost("(msg)");
+        dd(123);
+		//return $postService->addPost("(msg)");
 	}
+
+    /**
+     * @Route("/post/getPostById/{post_id}", name="post_by_id", requirements={"post_id"="\d+"})
+     */
+
+    public function getPostById(int $post_id, PostServiceInterface $postService) {
+        $blogPost = new BlogPost();
+        $blogPost->setMessage('Write A Blog Post');
+        $blogPost->setTags(['exTag_1', 'exTag_2']);
+
+        $post = $postService->getPost($post_id);
+
+        $form = $this->createFormBuilder($post)
+            ->add('message', TextType::class)
+            ->add('tags', CollectionType::class, [
+                'entry_type' => TextType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true
+            ])
+            ->add('save', SubmitType::class, ['label' => 'Create Post'])
+            ->getForm();
+
+        return $this->renderForm('post/post_01.twig', [
+            'form' => $form
+        ]);
+    }
 
     public function getTimePostgres()
     {
