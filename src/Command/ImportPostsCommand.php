@@ -33,12 +33,7 @@ class ImportPostsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $jsonFileContent = file_get_contents($input->getArgument('filename'));
-        $fileContent = json_decode($jsonFileContent);
-        foreach ($fileContent as $post) {
-            // dump($post->tags);
-            $this->postService->createPost($post->message, $post->tags);
-        }
-// dd($fileContent);
+        $this->postService->importPosts($jsonFileContent);
         $output->writeln($jsonFileContent);
         return Command::SUCCESS;
     }

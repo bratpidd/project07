@@ -13,7 +13,7 @@ class SearchCriteria
     public function __construct() {
         $this->sortOrder = "ASC";
         $this->filterByTag = "";
-        $this->recordsOnPage = 2;
+        $this->recordsOnPage = 10;
         $this->pageNumber = 1;
     }
 

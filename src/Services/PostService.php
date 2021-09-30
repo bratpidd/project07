@@ -3,7 +3,9 @@ namespace App\Services;
 
 
 use App\Blog\BlogPost;
+use App\Blog\BlogPostComment;
 use App\Blog\PostQueryBuilder;
+use App\Blog\SearchCriteria;
 use App\PropelModels\Post;
 use App\PropelModels\PostQuery;
 use App\PropelModels\TagQuery;
@@ -14,7 +16,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class PostService implements PostServiceInterface {
 
-    public function getPost(int $postId) {
+    public function getPost(int $postId): BlogPost {
         $postQueryBuilder = new PostQueryBuilder();
         $post = $postQueryBuilder->getPostById($postId);
 
@@ -24,8 +26,37 @@ class PostService implements PostServiceInterface {
     public function createPost(string $message, array $tags) {
         $postQueryBuilder = new PostQueryBuilder();
         $newBlogPost = new BlogPost($message, $tags);
-        $postQueryBuilder->createPost($newBlogPost);
-        // dd("Regular service was called! , " . $message);
+        $postQueryBuilder->savePost($newBlogPost);
     }
 
+    public function updatePost(BlogPost $blogPost) {
+        $postQueryBuilder = new PostQueryBuilder();
+        $postQueryBuilder->savePost($blogPost);
+    }
+
+    public function getPosts(SearchCriteria $criteria): array {
+        $postQueryBuilder = new PostQueryBuilder();
+        return $postQueryBuilder->getPostsByCriteria($criteria);
+    }
+
+    public function importPosts(string $json) {
+        $fileContent = json_decode($json);
+        foreach ($fileContent as $post) {
+            $this->createPost($post->message, $post->tags);
+        }
+    }
+
+    public function createPostComment(BlogPostComment $comment)
+    {
+        $postQueryBuilder = new PostQueryBuilder();
+        $postQueryBuilder->createPostComment($comment);
+    }
+
+    /**
+     * @param int $postId
+     * @return BlogPostComment[]
+     */
+    public function getPostComments(int $postId): array {
+        return PostQueryBuilder::getPostComments($postId);
+    }
 }

@@ -5,7 +5,11 @@ namespace App\Blog;
 class BlogPost
 {
     public $message = "";
+    /**
+     * @var string[]
+     */
     public $tags = [];
+    public $id = null;
 
     public function __construct(string $message = "", array $tags = []) {
         $this->setMessage($message);
@@ -24,5 +28,9 @@ class BlogPost
         }
 
         $this->tags = $tags;
+    }
+
+    public function setId(int $postId) {
+        $this->id = $postId;
     }
 }
