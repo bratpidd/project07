@@ -23,9 +23,4 @@ class PostEntityMapper
         return $blogPost;
     }
 
-
-    public function mapToRepository(PostTransferObject $post)
-    {
-
-    }
 }

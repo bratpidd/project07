@@ -10,6 +10,7 @@ use App\Services\PostService\QueryBuilders\PostQueryBuilder;
 use App\Services\PostService\TransferObjects\PostCommentTransferObject;
 use App\Services\PostService\TransferObjects\PostTransferObject;
 use App\Services\PostService\TransferObjects\SearchCriteria;
+use App\Services\PostService\TransferObjectsMappers\PostCommentEntityMapper;
 use App\Services\PostService\TransferObjectsMappers\PostEntityMapper;
 use Propel\Runtime\Collection\Collection;
 
@@ -20,14 +21,9 @@ class BlogRepository
      * @var PostQueryBuilder
      */
     private $postQueryBuilder;
-    /**
-     * @var PostEntityMapper
-     */
-    private $postMapper;
 
     public function __construct() {
         $this->postQueryBuilder = new PostQueryBuilder();
-        $this->postMapper = new PostEntityMapper();
     }
 
     /**
@@ -35,19 +31,21 @@ class BlogRepository
      * @return PostTransferObject[]
      */
     public function getPostsByCriteria(SearchCriteria $criteria): array {
+        $postMapper = new PostEntityMapper();
         $qPosts = $this->postQueryBuilder->getPostsByCriteria($criteria)
             ->paginate($page = $criteria->pageNumber, $maxPerPage = $criteria->recordsOnPage);
         $transferPosts = [];
         foreach ($qPosts as $qPost) {
-            array_push($transferPosts, $this->postMapper->mapToTransfer($qPost));
+            array_push($transferPosts, $postMapper->mapToTransfer($qPost));
         }
 
         return $transferPosts;
     }
 
     public function getPostById(int $postId): PostTransferObject {
+        $postMapper = new PostEntityMapper();
         $qPost = $this->postQueryBuilder->getPostById($postId)->find();
-        return $this->postMapper->mapToTransfer($qPost[0]);
+        return $postMapper->mapToTransfer($qPost[0]);
     }
 
     public function savePost(PostTransferObject $blogPost): void
@@ -84,11 +82,11 @@ class BlogRepository
      */
     public function getPostComments(int $postId): array
     {
+        $commentMapper = new PostCommentEntityMapper();
         $qPostComments = $this->postQueryBuilder->getPostComments($postId);
         $postComments = [];
         foreach ($qPostComments as $qPostComment) {
-            $postComment = new PostCommentTransferObject($qPostComment->getText(), $qPostComment->getPostId(), $qPostComment->getId());
-            array_push($postComments, $postComment);
+            array_push($postComments, $commentMapper->mapToTransfer($qPostComment));
         }
 
         return $postComments;
