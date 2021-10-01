@@ -7,16 +7,6 @@ use App\Services\PostService\TransferObjects\PostTransferObject;
 class PostEntityMapper
 {
 
-/*    public function mapToTransfer($repositoryObject): array
-    {
-        $posts = [];
-        foreach ($repositoryObject as $qFoundPost) {
-            array_push($posts, $this->fromQueryPost($qFoundPost));
-        }
-
-        return $posts;
-    }
-*/
     public function mapToTransfer($qPost): PostTransferObject {
         $tags = [];
         $message = "Post Not Found";

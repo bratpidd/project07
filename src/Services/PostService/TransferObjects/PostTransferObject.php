@@ -2,7 +2,6 @@
 
 namespace App\Services\PostService\TransferObjects;
 
-use Exception;
 use http\Exception\InvalidArgumentException;
 
 class PostTransferObject implements \Serializable

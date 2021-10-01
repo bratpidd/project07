@@ -2,14 +2,9 @@
 
 namespace App\Services\PostService\QueryBuilders;
 
-use App\Services\PostService\Persistence\Propel\Comment;
 use App\Services\PostService\Persistence\Propel\CommentQuery;
-use App\Services\PostService\Persistence\Propel\Post;
 use App\Services\PostService\Persistence\Propel\PostQuery;
-use App\Services\PostService\Persistence\Propel\TagQuery;
-use App\Services\PostService\TransferObjects\PostTransferObject;
 use App\Services\PostService\TransferObjects\SearchCriteria;
-use Propel\Runtime\Collection\Collection;
 
 class PostQueryBuilder
 {

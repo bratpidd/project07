@@ -20,7 +20,6 @@ class PostCommentTransferObject
         if (is_numeric($id)) {
             $this->setId($id);
         }
-
     }
 
     public function setText(string $text): void {
