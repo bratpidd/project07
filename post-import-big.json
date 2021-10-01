@@ -1,0 +1,30 @@
+[
+  {
+    "message": "A post_01 about PC",
+    "tags": ["PC", "<Mac>", "Linux"]
+  },
+  {
+    "message": "Tomatos and potatos",
+    "tags": ["tomato", "potato"]
+  },
+  {
+    "message": "Some history",
+    "tags": ["wars", "duels", "kings"]
+  },
+  {
+    "message": "Years",
+    "tags": ["2021", "2020", "1666"]
+  },
+  {
+    "message": "Tags reuse",
+    "tags": ["2021", "PC"]
+  },
+  {
+    "message": "Mood",
+    "tags": ["Good", "Bad", "Evil"]
+  },
+  {
+    "message": "Evil Genius",
+    "tags": ["Evil", "Genius"]
+  }
+]

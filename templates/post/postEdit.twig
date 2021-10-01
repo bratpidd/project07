@@ -1,4 +1,4 @@
-<h2>{{ pageTitle }}</h2>
+<h2>{{ isNewPost ? "Add New Post" : "Edit Post" }}</h2>
 {{ form_start(form) }}
     {{ form_row(form.message) }}
 

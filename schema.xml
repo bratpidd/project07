@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<database name="default" defaultIdMethod="native" namespace="App\PropelModels" package="PropelModels" defaultPhpNamingMethod="underscore">
+<database name="default" defaultIdMethod="native" namespace="App\Services\PostService\Persistence\Propel" package="Services.PostService.Persistence.Propel" defaultPhpNamingMethod="underscore">
 
   <table name="post" idMethod="native" phpName="Post">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>

@@ -29,4 +29,4 @@ services:
     # App\Service\PostServiceMock = alias
 
 
-    App\Services\PostServiceInterface: '@App\Services\PostService'
+    App\Services\PostService\PostServiceInterface: '@App\Services\PostService\PostService'

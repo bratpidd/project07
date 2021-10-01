@@ -1,51 +1,24 @@
 <?php
 namespace App\Controller;
 
-use App\Blog\BlogPost;
-use App\Blog\BlogPostComment;
-use App\Blog\PostQueryBuilder;
-use App\Blog\SearchCriteria;
-use App\Services\PostServiceInterface;
+use App\Services\PostService\QueryBuilders\PostQueryBuilder;
+use App\Services\PostService\PostServiceInterface;
+use App\Services\PostService\TransferObjects\PostCommentTransferObject;
+use App\Services\PostService\TransferObjects\PostTransferObject;
+use App\Services\PostService\TransferObjects\SearchCriteria;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class PostController extends AbstractController
 {
-	/**
-	 * @Route("/post/create")
-	 */
-
-	public function create(Request $request, PostServiceInterface $truePostService): Response {
-        $testValue = $this->getParameter('env_value');
-        dd(123);
-		//return $truePostService->addPost($testValue . ($request->request->get('message') ?? " No message was provided"));
-	}
-
-
-	/**
-	 * @Route("/post/create2")
-	 */
-
-	public function create2(Request $request, PostServiceInterface $postService): Response
-	{
-        $testDbValue = $this->getTimePostgres();
-        dump($testDbValue[0]);
-        // phpinfo();
-        // xdebug_info();
-        dd(123);
-		//return $postService->addPost("(msg)");
-	}
-
     /**
      * @Route("/post/edit/{post_id}", name="edit_post", requirements={"post_id"="\d+"})
      * @Route("/post/new", name="new_post")
@@ -53,11 +26,11 @@ class PostController extends AbstractController
 
     public function editPost(Request $request, PostServiceInterface $postService, ?int $post_id): Response {
         if ($request->attributes->get('_route') === "edit_post") {
-            $pageTitle = "Edit Post";
+            $isNewPost = false;
             $post = $postService->getPost($post_id);
         } else {
-            $pageTitle = "Create New Post";
-            $post = new BlogPost('Write A Blog Post', ['example tag 1', 'example tag 2']);
+            $isNewPost = true;
+            $post = new PostTransferObject('Write A Blog Post', ['example tag 1', 'example tag 2']);
         }
 
         $form = $this->createFormBuilder($post)
@@ -68,7 +41,7 @@ class PostController extends AbstractController
                 'allow_add' => true,
                 'allow_delete' => true
             ])
-            ->add('save', SubmitType::class, ['label' => 'Create Post'])
+            ->add('save', SubmitType::class, ['label' => $isNewPost ? 'Create Post' : 'Save Changes'])
             ->getForm();
 
         $form->handleRequest($request);
@@ -85,7 +58,7 @@ class PostController extends AbstractController
 
         return $this->renderForm('post/postEdit.twig', [
             'form' => $form,
-            'pageTitle' => $pageTitle
+            'isNewPost' => $isNewPost
         ]);
     }
 
@@ -119,7 +92,7 @@ class PostController extends AbstractController
     public function viewPost(Request $request, int $post_id, PostServiceInterface $postService): Response {
         $post = $postService->getPost($post_id);
 
-        $blogPostComment = new BlogPostComment("Write Comment Here", $post_id);
+        $blogPostComment = new PostCommentTransferObject("Write Comment Here", $post_id);
 
         $form = $this->createFormBuilder($blogPostComment)
             ->add('text', TextareaType::class, ['label' => false, 'attr' => ['rows' => 5]])
@@ -129,7 +102,7 @@ class PostController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $submittedComment = $form->getData();
-            PostQueryBuilder::createPostComment($submittedComment);
+            $postService->createPostComment($submittedComment);
         }
 
         $comments = $postService->getPostComments($post->id);
@@ -139,16 +112,6 @@ class PostController extends AbstractController
             'form' => $form,
             'comments' => $comments
         ]);
-    }
-
-    public function getTimePostgres()
-    {
-        $sql = "SELECT now()";
-
-        $em = $this->getDoctrine()->getManager();
-        $stmt = $em->getConnection()->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll();
     }
 
 }
