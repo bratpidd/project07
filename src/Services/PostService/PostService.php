@@ -2,7 +2,6 @@
 namespace App\Services\PostService;
 
 
-use App\Services\PostService\Repository\BlogRepository;
 use App\Services\PostService\TransferObjects\PostCommentTransferObject;
 use App\Services\PostService\TransferObjects\PostTransferObject;
 use App\Services\PostService\TransferObjects\SearchCriteria;
@@ -10,10 +9,17 @@ use App\Services\PostService\TransferObjects\SearchCriteria;
 
 class PostService implements PostServiceInterface {
 
-    public function getPost(int $postId): PostTransferObject {
-        $blogRepository = new BlogRepository();
+    /**
+     * @var PostServiceFactory
+     */
+    public $factory;
 
-        return $blogRepository->getPostById($postId);
+    /*public function __construct() {
+        $this->factory = new PostServiceFactory();
+    }*/
+
+    public function getPost(int $postId): ?PostTransferObject {
+        return $this->factory->getBlogRepository()->getPostById($postId);
     }
 
     /**
@@ -21,32 +27,29 @@ class PostService implements PostServiceInterface {
      * @return PostTransferObject[]
      */
     public function getPosts(SearchCriteria $criteria): array {
-        $blogRepository = new BlogRepository();
-        return $blogRepository->getPostsByCriteria($criteria);
+        return $this->factory->getBlogRepository()->getPostsByCriteria($criteria);
     }
 
-    public function createPost(string $message, array $tags) {
-        $blogRepository = new BlogRepository();
+    public function createPost(string $message, array $tags): void {
         $newBlogPost = new PostTransferObject($message, $tags);
-        $blogRepository->savePost($newBlogPost);
+        $this->factory->getPostQueryBuilder()->savePost($newBlogPost);
     }
 
-    public function updatePost(PostTransferObject $blogPost) {
-        $blogRepository = new BlogRepository();
-        $blogRepository->savePost($blogPost);
+    public function updatePost(PostTransferObject $blogPost): void {
+        $this->factory->getPostQueryBuilder()->savePost($blogPost);
     }
 
-    public function importPosts(string $json) {
+    public function importPosts(string $json): void {
         $fileContent = json_decode($json);
         foreach ($fileContent as $post) {
             $this->createPost($post->message, $post->tags);
         }
     }
 
-    public function createPostComment(PostCommentTransferObject $comment)
+    public function createPostComment(PostCommentTransferObject $comment): void
     {
-        $blogRepository = new BlogRepository();
-        $blogRepository->createPostComment($comment);
+        $this->factory->getRabbitMqService()->sendRabbitMqMessage($comment->text);
+        $this->factory->getPostQueryBuilder()->createPostComment($comment);
     }
 
     /**
@@ -54,7 +57,6 @@ class PostService implements PostServiceInterface {
      * @return PostCommentTransferObject[]
      */
     public function getPostComments(int $postId): array {
-        $blogRepository = new BlogRepository();
-        return $blogRepository->getPostComments($postId);
+        return $this->factory->getBlogRepository()->getPostComments($postId);
     }
 }

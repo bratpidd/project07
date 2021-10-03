@@ -29,4 +29,5 @@ services:
     # App\Service\PostServiceMock = alias
 
 
-    App\Services\PostService\PostServiceInterface: '@App\Services\PostService\PostService'
+    App\Services\PostService\PostServiceInterface:
+        factory: ['@App\Services\PostService\PostServiceFactory', 'build']

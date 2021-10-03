@@ -1,7 +1,0 @@
-{{ form(form) }}
-<a href="{{ path('new_post') }}" target="_blank">Create New Post!</a>
-<ul>
-{% for post in posts %}
-    <li><a href="{{ path('view_post', {post_id: post.id}) }}" target="_blank">{{ post.message }}</a> ({{ post.tags|join(', ') }})</li>
-{% endfor %}
-</ul>

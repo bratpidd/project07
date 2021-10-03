@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <div style="width: 100%; height: 30px; background: #dcc5a8">
+    NAV BAR (pretending)
+    <a href="{{ path('blog_index') }}">BLOG</a> |
+    <a href="{{ path('observe_posts') }}">POSTS OBSERVE</a> |
+    <a href="{{ path('new_post') }}">NEW POST</a>
+  </div>
+
+  {% block head %}
+  <title>{% block title %}{% endblock %} - Blog</title>
+  {% endblock %}
+</head>
+<body>
+<h1>Blog: {% block contenttitle %}{% endblock %}</h1>
+  <div id="content">{% block content %}{% endblock %}</div>
+  <div id="footer">
+    {% block footer %}
+      &copy; Copyright 2021 by bratpidd
+    {% endblock %}
+  </div>
+</body>
+</html>
+
+{% block javaScript %}
+  <script>
+    function getRandomColor() {
+      let letters = 'CDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 4)];
+      }
+      return color;
+    }
+
+  function changeBackground(color) {
+      document.body.style.background = color;
+  }
+
+  window.addEventListener("load",function() { changeBackground(getRandomColor()) });
+  </script>
+{% endblock %}

@@ -10,3 +10,6 @@ services:
   nginx:
     ports:
       - "80:80"
+  rabbitmq:
+    ports:
+      - "8080:15672"

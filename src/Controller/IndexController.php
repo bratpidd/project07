@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", name="blog_index")
     */
 
 
@@ -17,7 +17,7 @@ class IndexController extends AbstractController
     {
         $number = random_int(0, 100);
         return new Response(
-            $this->renderView("index.twig", array(
+            $this->renderView("Blog/Pages/mainPage.twig", array(
                 "displayValue" => "kek zaga",
                 "number" => $number,
                 "request" => implode("|", $request->query->all())

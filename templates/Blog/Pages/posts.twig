@@ -1,0 +1,18 @@
+{% extends "Blog/base.twig" %}
+
+{% block title %}Posts{% endblock %}
+{% block head %}
+    {{ parent() }}
+    <style type="text/css">
+        .important { color: #1d8c7c; }
+    </style>
+{% endblock %}
+{% block contenttitle %}Posts Lookup{% endblock %}
+{% block content %}
+    {{ form(form) }}
+    <ul>
+        {% for post in posts %}
+            <li><a href="{{ path('view_post', {post_id: post.id}) }}">{{ post.message }}</a> ({{ post.tags|join(', ') }})</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

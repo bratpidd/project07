@@ -34,3 +34,7 @@ services:
     volumes:
       - ./docker/nginx/nginx_config_project07.conf:/opt/bitnami/nginx/conf/server_blocks/project07.conf
       - ./static:/app/static
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    networks:
+      - app-tier

@@ -9,7 +9,7 @@ use App\Services\PostService\TransferObjects\SearchCriteria;
 interface PostServiceInterface {
     public function createPost(string $message, array $tags);
     public function updatePost(PostTransferObject $blogPost);
-    public function getPost(int $postId): PostTransferObject;
+    public function getPost(int $postId): ?PostTransferObject;
     public function getPosts(SearchCriteria $criteria): array;
     public function importPosts(string $json);
     public function createPostComment(PostCommentTransferObject $comment);

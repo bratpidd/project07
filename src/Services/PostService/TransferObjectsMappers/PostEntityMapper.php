@@ -2,22 +2,23 @@
 
 namespace App\Services\PostService\TransferObjectsMappers;
 
+use App\Services\PostService\Persistence\Propel\Post;
 use App\Services\PostService\TransferObjects\PostTransferObject;
 
 class PostEntityMapper
 {
-
-    public function mapToTransfer($qPost): PostTransferObject {
+    /**
+     * @param Post $qPost
+     * @return PostTransferObject
+     */
+    public function mapToTransfer(Post $qPost): PostTransferObject {
+        $blogPost = new PostTransferObject();
         $tags = [];
-        $message = "Post Not Found";
-
-        if (!is_null($qPost)) {
-            $message = $qPost->getMessage();
-            foreach($qPost->getTags() as $tag) {
-                array_push($tags, $tag->getTitle());
-            }
+        foreach($qPost->getTags() as $tag) {
+            array_push($tags, $tag->getTitle());
         }
-        $blogPost = new PostTransferObject($message, $tags);
+        $blogPost->setMessage($qPost->getMessage());
+        $blogPost->setTags($tags);
         $blogPost->setId($qPost->getId());
 
         return $blogPost;

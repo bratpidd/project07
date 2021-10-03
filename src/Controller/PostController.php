@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Services\PostService\QueryBuilders\PostQueryBuilder;
 use App\Services\PostService\PostServiceInterface;
 use App\Services\PostService\TransferObjects\PostCommentTransferObject;
 use App\Services\PostService\TransferObjects\PostTransferObject;
@@ -56,7 +55,7 @@ class PostController extends AbstractController
             return $this->redirectToRoute('observe_posts');
         }
 
-        return $this->renderForm('post/postEdit.twig', [
+        return $this->renderForm('Blog/Pages/postEdit.twig', [
             'form' => $form,
             'isNewPost' => $isNewPost
         ]);
@@ -78,12 +77,12 @@ class PostController extends AbstractController
             ->getForm();
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $submittedCriteria = $form->getData();
+		if ($form->isSubmitted() && $form->isValid()) {
+			$submittedCriteria = $form->getData();
             $posts = $postService->getPosts($submittedCriteria);
         }
 
-        return $this->renderForm('post/postsObserve.twig', ['form' => $form, 'posts' => $posts ?? []]);
+        return $this->renderForm('Blog/Pages/posts.twig', ['form' => $form, 'posts' => $posts ?? []]);
     }
 
     /**
@@ -105,9 +104,9 @@ class PostController extends AbstractController
             $postService->createPostComment($submittedComment);
         }
 
-        $comments = $postService->getPostComments($post->id);
+        $comments = $post ? $postService->getPostComments($post->id) : [];
 
-        return $this->renderForm('post/postView.twig', [
+        return $this->renderForm('Blog/Pages/postView.twig', [
             'post' => $post,
             'form' => $form,
             'comments' => $comments
